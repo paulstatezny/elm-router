@@ -39,5 +39,5 @@ type alias Model =
   { location : Location
   , routesOnUrl : Dict Url (List ElmApp)
   , manualRoutes : Dict String (List ElmApp)
-  , newPageLoadWithUrlRoutes : List Url
+  , routesOnFirstUrl : List Url
   }

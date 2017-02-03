@@ -3,7 +3,6 @@ module ElmRouter.Init exposing (init)
 
 import Dict exposing (Dict)
 import Navigation exposing (Location)
-import Ports.PubSub exposing (Message)
 import ElmRouter.Types exposing (..)
 import ElmRouter.Update exposing (appCmd, routeLogCmd, locationMatchesRegex)
 import Routes
@@ -40,7 +39,7 @@ onUrlTuple { strategy, elmApps } =
       Nothing
 
 
-manualRoutes : List Route -> Dict Message (List ElmApp)
+manualRoutes : List Route -> Dict String (List ElmApp)
 manualRoutes routes =
   routes
   |> List.map manualTuple
@@ -51,8 +50,8 @@ manualRoutes routes =
 manualTuple : Route -> Maybe (Url, List ElmApp)
 manualTuple { strategy, elmApps } =
   case strategy of
-    OnBroadcast message ->
-      Just (message, elmApps)
+    Manually routeName ->
+      Just (routeName, elmApps)
 
     _ ->
       Nothing
@@ -69,7 +68,7 @@ routesOnFirstUrl routes =
 urlOnPageLoad : RouteStrategy -> Maybe String
 urlOnPageLoad strategy =
   case strategy of
-    NewPageLoadWithUrl url ->
+    OnFirstUrl url ->
       Just url
 
     _ ->
@@ -101,7 +100,7 @@ launchImmediately location { strategy } =
     Immediately ->
       True
 
-    NewPageLoadWithUrl url ->
+    OnFirstUrl url ->
       locationMatchesRegex location url
 
     OnUrl url ->

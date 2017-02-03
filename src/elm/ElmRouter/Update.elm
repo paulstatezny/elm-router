@@ -7,6 +7,7 @@ import Json.Decode as JD
 import Json.Encode as JE
 import Http exposing (decodeUri)
 import Navigation exposing (Location)
+import Ports.Router as Router
 import ElmRouter.Ports as Ports
 import ElmRouter.Types exposing (..)
 import ElmRouter.Types.RouterCmd as RouterCmd exposing (RouterCmd(..))
@@ -48,7 +49,7 @@ update msg model =
             |> List.map appCmd
             |> Cmd.batch
             |> \cmd ->
-                 model ! [cmd, routeLogCmd <| OnBroadcast message]
+                 model ! [cmd, routeLogCmd <| Manually routeName]
 
           else
             model ! []
@@ -64,12 +65,9 @@ update msg model =
           |> List.filter (locationMatchesRegex location)
 
         newPathname = model.location.pathname /= location.pathname
-        routeFoundExpectingRefresh = List.any (locationMatchesRegex location) model.newPageLoadWithUrlRoutes
-        reloadPage = newPathname && routeFoundExpectingRefresh
       in
         { model | location = location } !
-        [ Ports.broadcastUrlUpdate location
-        , if reloadPage then Ports.refreshBrowser () else Cmd.none
+        [ Ports.routerBroadcastUrlUpdate location
         , routeUrls
             |> List.map ((flip Dict.get) model.manualRoutes)
             |> List.map (Maybe.withDefault [])
@@ -98,10 +96,10 @@ appCmd : ElmApp -> Cmd Msg
 appCmd elmApp =
   case elmApp of
     Worker elmAppName flags ->
-      Ports.worker (elmAppName, flags)
+      Ports.routerWorker (elmAppName, flags)
 
     Embed elmAppName selector flags ->
-      Ports.embed (elmAppName, selector, flags)
+      Ports.routerEmbed (elmAppName, selector, flags)
 
 
 routeLogCmd : RouteStrategy -> Cmd Msg
@@ -122,7 +120,7 @@ strategyToString strategy =
       "OnUrl " ++ url
 
     Manually routeName ->
-      "Manually " ++ message
+      "Manually " ++ routeName
 
     Immediately ->
       "Immediately"
