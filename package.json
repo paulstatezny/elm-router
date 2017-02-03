@@ -1,0 +1,29 @@
+{
+  "name": "elm-router",
+  "version": "1.0.0",
+  "description": "A router for launching Elm apps",
+  "main": "lib/elm-router.js",
+  "scripts": {
+    "build": "node_modules/babel-cli/bin/babel.js  src/ --out-dir lib/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "version": "npm run build"
+  },
+  "keywords": [
+    "Elm",
+    "router"
+  ],
+  "author": "Consolidated Knowledge",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/knledg/elm-localstorage-ports/issues"
+  },
+  "homepage": "https://github.com/knledg/elm-localstorage-ports#readme",
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-core": "^6.22.1",
+    "babel-preset-es2015": "^6.22.0"
+  },
+  "babel": {
+    "presets": ["es2015"]
+  }
+}
