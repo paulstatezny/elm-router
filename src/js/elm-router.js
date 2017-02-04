@@ -1,8 +1,3 @@
-module.exports = {
-  start: start,
-  logPorts: debug
-};
-
 /**
  * ==== elm-router ====
  *
@@ -10,8 +5,14 @@ module.exports = {
  */
 
 const { logFor, debug } = require("./log-ports");
+const routerPorts = require("./router-ports");
 const log = logFor("ElmRouter");
 const portsObjects = [];
+
+module.exports = {
+  start: start,
+  logPorts: debug
+};
 
 /**
  * Initialize Monarch Elm app and wire up ports to it.
@@ -19,10 +20,16 @@ const portsObjects = [];
  * @param {Array} portModules_  An array of port module objects with `register` and `samplePortName`
  */
 function start(Elm, portModules) {
+  portModules.push(routerPorts);
+
   const elmRouter = worker("ElmRouter");
 
-  elmRouter.ports.routerWorker.subscribe(worker);
-  elmRouter.ports.routerEmbed.subscribe(embed);
+  elmRouter.ports.routerWorker.subscribe(
+    ([name, flags]) => worker(name, flags || undefined)
+  );
+  elmRouter.ports.routerEmbed.subscribe(
+    ([name, selector, flags]) => embed(name, selector, flags || undefined)
+  );
 
   elmRouter.ports.routerLog.subscribe(message => {
     log(message);
@@ -38,7 +45,7 @@ function start(Elm, portModules) {
    *
    * @throws {Error}  Elm[name].App must be an Elm module with `main` defined.
    */
-  function worker([name, flags]) {
+  function worker(name, flags) {
     if (flags) {
       log("worker " + name, flags);
     } else {
@@ -46,7 +53,7 @@ function start(Elm, portModules) {
     }
 
     const App = elmApp(name);
-    const application = App.worker ? App.worker(flags) : App.embed(document.createElement("div"));
+    const application = App.worker ? App.worker(flags) : App.embed(document.createElement("div"), flags);
     registerPorts(application.ports, name);
 
     return application;
@@ -62,7 +69,7 @@ function start(Elm, portModules) {
    * @throws {Error}  The selector must correspond to an existing DOM node.
    * @throws {Error}  Elm[name].App must be an Elm module with `main` defined.
    */
-  function embed([name, selector, flags]) {
+  function embed(name, selector, flags) {
     if (flags) {
       log("embed " + name, selector, flags);
     } else {
