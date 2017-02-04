@@ -8,7 +8,7 @@ module.exports = {
 }
 
 function copyFile(filepath) {
-  var source = path.resolve(__dirname, "..", "src", "elm", filepath);
+  var source = path.resolve(__dirname, "..", "lib", "elm", filepath);
   var destination = path.resolve(".", filepath);
   if (fs.existsSync(destination)) {
     console.warn("File already exists, skipping: " + destination);
