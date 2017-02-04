@@ -60,7 +60,7 @@ update msg model =
     UrlUpdate location -> -- Launch routes with OnUrl strategy
       let
         routeUrls =
-          model.manualRoutes
+          model.routesOnUrl
           |> Dict.keys
           |> List.filter (locationMatchesRegex location)
 
@@ -69,7 +69,7 @@ update msg model =
         { model | location = location } !
         [ Ports.routerBroadcastUrlUpdate location
         , routeUrls
-            |> List.map ((flip Dict.get) model.manualRoutes)
+            |> List.map ((flip Dict.get) model.routesOnUrl)
             |> List.map (Maybe.withDefault [])
             |> List.concat
             |> List.map appCmd
