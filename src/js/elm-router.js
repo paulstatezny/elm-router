@@ -17,9 +17,11 @@ module.exports = {
 /**
  * Initialize Monarch Elm app and wire up ports to it.
  *
- * @param {Array} portModules_  An array of port module objects with `register` and `samplePortName`
+ * @param {Object} Elm          A compiled Elm object containing Elm app launchers (objects with `embed` or `worker`)
+ * @param {Array}  portModules  An array of port module objects with `register` and `samplePortName`
  */
 function start(Elm, portModules) {
+  portModules = portModules || [];
   portModules.push(routerPorts);
 
   const elmRouter = worker("ElmRouter");
