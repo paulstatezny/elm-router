@@ -161,7 +161,11 @@ function start(Elm, portModules) {
       }
 
       if (ports[samplePortName]) {
-        register(ports, log, elmRouter.ports);
+        register(
+          ports,
+          log,
+          elmRouter ? elmRouter.ports : ports
+        );
       }
     });
   }
