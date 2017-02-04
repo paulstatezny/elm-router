@@ -17,4 +17,4 @@ port routerBroadcastUrlUpdate : Navigation.Location -> Cmd msg
 
 
 -- Receive from JS (Sub)
-port routerReceiveCmd : (Command -> msg) -> Sub msg
+port routerReceiveCmd : ((Command, Json.Encode.Value) -> msg) -> Sub msg

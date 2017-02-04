@@ -13,7 +13,7 @@ type RouterCmd
 
 fromStringAndPayload : String -> JD.Value -> Maybe RouterCmd
 fromStringAndPayload string payload =
-  case (command, JD.decodeValue JD.string payload) of
+  case (string, JD.decodeValue JD.string payload) of
     ("back", _) ->
       Just Back
 
