@@ -106,8 +106,9 @@ function start(Elm, portModules) {
     const appContainer = name.split(".").reduce(
       (container, nameSegment) => {
         if (!container[nameSegment]) {
-          throw new Error(`Elm module \`${name}.App\` not found. ` +
-            "Did you add it to brunch-config.js in `plugins -> elmBrunch -> mainModules`? " +
+          throw new Error(
+            `Elm module \`${name}.App\` not found. ` +
+            "Did you add it to the necessary config such as `brunch-config.js` or `app.elmproj`?" +
             "Does it export a `main` function?`"
           );
         }
@@ -121,7 +122,7 @@ function start(Elm, portModules) {
       throw new Error(
         `Expected Elm namespace \`${name}\` to contain App module exporting \`main\`. ` +
         "Hint: Did you create `App.elm` in that folder? " +
-        "Did you add it to brunch-config.js in `plugins -> elmBrunch -> mainModules`?"
+        "Did you add it to the necessary config such as `brunch-config.js` or `app.elmproj`?"
       );
     }
 
