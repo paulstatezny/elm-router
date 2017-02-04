@@ -4,7 +4,7 @@
   "description": "A router for launching Elm apps",
   "main": "lib/js/elm-router.js",
   "scripts": {
-    "build": "node_modules/babel-cli/bin/babel.js  src/ --out-dir lib/",
+    "build": "node_modules/babel-cli/bin/babel.js  src/ --out-dir lib/js/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "version": "npm run build"
   },
