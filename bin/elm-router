@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+
+var fs = require("./fs-util");
+
+process.title = "elm-router";
+
+if (process.argv[2] !== "init") {
+  console.error("\nIntended use of elm-router is: `elm-router init`\n");
+  process.exit(1);
+}
+
+var stdin = process.openStdin();
+
+stdin.addListener("data", function(d) {
+  if (d.toString().trim().toLowerCase() === "y") {
+    copyFiles();
+  } else {
+    console.log("Exiting.");
+    console.log("Type `y` next time to copy the files.\n");
+    process.exit();
+  }
+});
+
+console.log("\nAre you inside one of the \"source-directories\" from your project's elm-package.json? (y/n)");
+
+function copyFiles() {
+  console.log("\nCopying files to the current directory.\n");
+  fs.ensureDirectory("Ports");
+  fs.ensureDirectory("ElmRouter");
+  fs.ensureDirectory("ElmRouter/Types");
+  fs.copyFile("Routes.elm");
+  fs.copyFile("ElmRouter/App.elm");
+  fs.copyFile("ElmRouter/Init.elm");
+  fs.copyFile("ElmRouter/Ports.elm");
+  fs.copyFile("ElmRouter/Types.elm");
+  fs.copyFile("ElmRouter/Update.elm");
+  fs.copyFile("ElmRouter/Types/RouterCmd.elm");
+  fs.copyFile("Ports/Router.elm");
+  console.log("");
+  process.exit();
+}
