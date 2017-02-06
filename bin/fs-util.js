@@ -7,9 +7,7 @@ module.exports = {
   ensureDirectory: ensureDirectory
 }
 
-function copyFile(filepath) {
-  var source = path.resolve(__dirname, "..", "lib", "elm", filepath);
-  var destination = path.resolve(".", filepath);
+function copyFile(source, destination) {
   if (fs.existsSync(destination)) {
     console.warn("File already exists, skipping: " + destination);
   } else {
