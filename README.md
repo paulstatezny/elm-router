@@ -2,35 +2,83 @@
 
 Elegantly launch Elm apps and wire up generic ports.
 
-# Set Up
+# Quick Start (5 steps)
 
-## Add the Elm code to your project
-
-[Package.elm-lang.org](http://package.elm-lang.org/) does not allow packages with port modules. (Elm Router uses these.) To get around this, you'll need to add the Elm code of Elm Router directly into your project.
-
-```
-$ npm install -g elm-router
-$ cd /path/to/elm/project
-$ elm-router init
-```
-
-You will be asked,
-
-```
-Are you inside one of the "source-directories" from your project's elm-package.json? (y/n)
-```
-
-Type `y` and `elm-router` will create all of the necessary Elm files.
-
-**Note:** `elm-router init` must be run from a directory in the `"source-directories\"` array in your project's `elm-package.json`. The above commands assume that `/path/to/elm/project` is the path containing `elm-package.json`, and that you have not modified `"source-directories"`.
-
-## Install the JavaScript dependency in your project
+## 1. Install via NPM
 
 ```
 $ npm install --save elm-router
 ```
 
-(Run this in the directory with `package.json`, of course.)
+## 2. In `elm-package.json`, import the [ElmRouter](https://github.com/knledg/elm-router/tree/master/lib/elm/ElmRouter) Elm code
+
+Add `node_modules/elm-router/lib/elm` to your `source-directories`:
+
+```js
+// elm-package.json
+
+{
+    // ...
+
+    "source-directories": [
+        "../../node_modules/elm-pub-sub-ports/lib/elm", // Exact path to node_modules may be different for you
+        "./"
+    ],
+
+    // ...
+}
+```
+
+This will allow `elm-make` to find all of the Elm code.
+
+## 3. Add Routes.elm to your project
+
+```
+$ npm install -g elm-router
+$ cd /path/to/elm/project    <-- This directory must be in `source-directories` in elm-package.json
+$ elm-router init
+```
+
+If you don't want to globally install `elm-router` just to create the `Routes.elm` template, here are your options:
+
+1. Copy it into your Elm project from [here](https://github.com/knledg/elm-router/blob/master/lib/elm-templates/Routes.elm)
+2. Reference the CLI tool from `node_modules` like this: `../path/to/node_modules/elm-router/bin/elm-router init`
+
+## 4. Add `ElmRouter` to your Elm app configuration
+
+### Using [Webpack](https://webpack.js.org/) with [elm-webpack-project-loader](https://github.com/joeandaverde/elm-webpack-project-loader)
+
+Add this path to the `"main-modules"` section of your `.elmproj` file:
+
+```javascript
+{
+  ...
+
+  "main-modules": [
+    ...
+
+    "../../node_modules/elm-router/lib/elm/ElmRouter/App.elm"
+  ]
+}
+```
+
+(Careful, `node_modules` might be in a slightly different location for you.)
+
+### Using Other Build Tools
+
+#### The short version
+
+```
+$ elm-make --output elm.js ./App1.elm ./App2.elm ../node_modules/elm-router/lib/elm/ElmRouter/App.elm
+```
+
+#### The long explanation
+
+`elm-make` bundles your Elm app along with the Elm runtime. (Which is a lot of JavaScript.) If you run `elm-make` for each app separately and then bundle the compiled results, you'll end up bundling multiple copies of the Elm runtime.
+
+To avoid this performance hit, `elm-make` should be passed every one of your Elm apps, which will bundle them together with a single copy of the Elm runtime. Just make sure that this path is one of the paths passed to `elm-make`: `node_modules/elm-router/lib/elm/ElmRouter/App.elm`
+
+## 5. Start the router in your JavaScript
 
 ```javascript
 var elmRouter = require("elm-router");
@@ -38,10 +86,6 @@ elmRouter.start(Elm);
 ```
 
 `Elm` is the object compiled with `elm-make`, containing all of your project's Elm apps. It's the object with which you would have previously called `Elm.SomeApp.embed(document.getElementById("some-app"))`.
-
-## Add `ElmRouter` to your Elm app configuration
-
-Elm configuration setups for multiple Elm apps typically include a list of `main` modules to include. (An array of Elm apps.) Ensure that `ElmRouter/App.elm` is in this list.
 
 # Adding Routes
 
@@ -145,3 +189,7 @@ A function that takes the `ports` object of an instantiated Elm app in JavaScrip
 #### `samplePortName`
 
 The name of one of the ports in the `port module`. (Any one.) This allows Elm Router to automatically inspect Elm apps as they are launched and automatically subscribe the ports.
+
+## Questions or Problems?
+
+Feel free to create an issue in the [GitHub issue tracker](https://github.com/knledg/elm-router/issues).
