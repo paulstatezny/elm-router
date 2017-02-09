@@ -1,63 +1,38 @@
 #!/usr/bin/env node
 
-var fs = require("./fs-util");
-var path = require("path");
+var fs = require('./fs-util');
+var path = require('path');
 
-process.title = "elm-router";
+process.title = 'elm-router';
 
-if (process.argv[2] === "init" || process.argv[2] === "copy-source") {
+if (process.argv[2] === 'init') {
   start();
 } else {
-  console.log("\nelm-router supports the following commands:\n");
-  console.log("  elm-router init           (Adds Routes.elm to current directory)");
-  console.log("  elm-router copy-source    (Copies the source files of elm-router itself to the current directory)");
-  console.log("  elm-router help           (Displays this prompt)\n");
+  console.log('\nelm-router supports the following commands:\n');
+  console.log('  elm-router init           (Adds Routes.elm to current directory)');
+  console.log('  elm-router help           (Displays this prompt)\n');
   process.exit();
 }
 
 function start() {
   var stdin = process.openStdin();
 
-  stdin.addListener("data", function(d) {
-    if (d.toString().trim().toLowerCase() === "y") {
-      switch (process.argv[2]) {
-        case "init":
-          copyRoutesTemplate();
-          break;
-
-        case "copy-source":
-          copySource();
-          break;
-      }
+  stdin.addListener('data', function(d) {
+    if (d.toString().trim().toLowerCase() === 'y') {
+      copyRoutesTemplate();
     } else {
-      console.log("Exiting.");
-      console.log("Type `y` next time to copy the files.\n");
+      console.log('Exiting.');
+      console.log('Type `y` next time to copy the files.\n');
       process.exit();
     }
   });
 
-  console.log("\nAre you inside one of the \"source-directories\" from your project's elm-package.json? (y/n)");
+  console.log('\nAre you inside one of the \'source-directories\' from your project\'s elm-package.json? (y/n)');
 }
 
 function copyRoutesTemplate() {
-  console.log("\nCopying files to the current directory.\n");
-  fs.copyFile(path.resolve(__dirname, "../lib/elm-templates/Routes.elm"), path.resolve(".", "Routes.elm"));
-  console.log("");
-  process.exit();
-}
-
-function copySource() {
-  console.log("\nCopying files to the current directory.\n");
-  fs.ensureDirectory("Ports");
-  fs.ensureDirectory("ElmRouter");
-  fs.ensureDirectory("ElmRouter/Types");
-  fs.copyFile(path.resolve(__dirname, "../lib/elm/ElmRouter/App.elm"), path.resolve(".", "ElmRouter/App.elm"));
-  fs.copyFile(path.resolve(__dirname, "../lib/elm/ElmRouter/Init.elm"), path.resolve(".", "ElmRouter/Init.elm"));
-  fs.copyFile(path.resolve(__dirname, "../lib/elm/ElmRouter/Ports.elm"), path.resolve(".", "ElmRouter/Ports.elm"));
-  fs.copyFile(path.resolve(__dirname, "../lib/elm/ElmRouter/Types.elm"), path.resolve(".", "ElmRouter/Types.elm"));
-  fs.copyFile(path.resolve(__dirname, "../lib/elm/ElmRouter/Update.elm"), path.resolve(".", "ElmRouter/Update.elm"));
-  fs.copyFile(path.resolve(__dirname, "../lib/elm/ElmRouter/Types/RouterCmd.elm"), path.resolve(".", "ElmRouter/Types/RouterCmd.elm"));
-  fs.copyFile(path.resolve(__dirname, "../lib/elm/Ports/Router.elm"), path.resolve(".", "Ports/Router.elm"));
-  console.log("");
+  console.log('\nCopying Routes.elm to the current directory.\n');
+  fs.copyFile(path.resolve(__dirname, '../lib/elm-templates/Routes.elm'), path.resolve('.', 'Routes.elm'));
+  console.log('');
   process.exit();
 }

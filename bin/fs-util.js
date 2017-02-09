@@ -9,7 +9,7 @@ module.exports = {
 
 function copyFile(source, destination) {
   if (fs.existsSync(destination)) {
-    console.warn("File already exists, skipping: " + destination);
+    console.warn("File already exists, aborting: " + destination);
   } else {
     copySync(source, destination);
     console.log("Created file: " + destination);
