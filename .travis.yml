@@ -1,6 +1,8 @@
 language: node_js
 install:
   - npm install -g elm
+  - npm install -g yarn
+  - yarn
 node_js:
   - "4"
 cache: yarn
