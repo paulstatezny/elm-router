@@ -1,4 +1,4 @@
-# Elm Router
+# Elm Router [![Build Status](https://travis-ci.org/knledg/elm-router.svg?branch=master)](https://travis-ci.org/knledg/elm-router)
 
 **Write less JavaScript.**
 
