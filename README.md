@@ -100,20 +100,19 @@ import Json.Encode exposing (object, string)
 
 routes location =
   [ Route Immediately
-      [ Worker "MobileMenu" Nothing
+      [ Worker "MobileMenu"
       , -- Other apps to run on immediately on page load, no matter the page
       ]
 
   , Route (OnUrl "^/contact$") -- Regex for contact page
-      [ Embed "ContactForm" "#contact_form" Nothing
+      [ Embed "ContactForm" "#contact_form"
       , -- Other apps on contact page
       ]
 
   , Route (OnUrl "^/$") -- Regex for homepage
-      [ Embed "SearchBar" "#search_bar" <|
-          Just <| object
-            [ ( "placeholder", string "What are you looking for?" )
-            ]
+      [ EmbedWithFlags "SearchBar" "#search_bar" <| object
+          [ ( "placeholder", string "What are you looking for?" )
+          ]
       , -- Other apps on homepage
       ]
   ]

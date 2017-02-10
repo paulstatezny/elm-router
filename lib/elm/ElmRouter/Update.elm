@@ -95,11 +95,17 @@ locationMatchesRegex { pathname } pathRegex =
 appCmd : ElmApp -> Cmd Msg
 appCmd elmApp =
   case elmApp of
-    Worker elmAppName flags ->
-      Ports.routerWorker (elmAppName, flags)
+    Worker elmAppName ->
+      Ports.routerWorker (elmAppName, Nothing)
 
-    Embed elmAppName selector flags ->
-      Ports.routerEmbed (elmAppName, selector, flags)
+    WorkerWithFlags elmAppName flags ->
+      Ports.routerWorker (elmAppName, Just flags)
+
+    Embed elmAppName selector ->
+      Ports.routerEmbed (elmAppName, selector, Nothing)
+
+    EmbedWithFlags elmAppName selector flags ->
+      Ports.routerEmbed (elmAppName, selector, Just flags)
 
 
 routeLogCmd : RouteStrategy -> Cmd Msg

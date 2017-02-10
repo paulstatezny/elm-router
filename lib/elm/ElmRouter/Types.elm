@@ -13,8 +13,10 @@ type alias Url = String
 
 
 type ElmApp
-  = Worker ElmAppName (Maybe Flags)
-  | Embed ElmAppName Selector (Maybe Flags)
+  = Worker ElmAppName
+  | WorkerWithFlags ElmAppName Flags
+  | Embed ElmAppName Selector
+  | EmbedWithFlags ElmAppName Selector Flags
 
 
 type RouteStrategy
