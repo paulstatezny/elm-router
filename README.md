@@ -1,37 +1,75 @@
 # Elm Router
 
-Elegantly launch Elm apps and wire up generic ports.
+**Write less JavaScript.**
 
-# Quick Start (5 steps)
+Create a website with many small Elm applications, powered by reusable Elm ports from NPM.
 
-## 1. Install via NPM
+## Why use Elm Router?
+
+JavaScript can't provide the safety and guarantees that Elm can. But Elm [requires you to use JavaScript](https://guide.elm-lang.org/interop/javascript.html) to (1) launch Elm apps and (2) perform side effects. (Sending Websockets, saving to LocalStorage, etc.)
+
+Elm Router minimizes the JavaScript you'll write by:
+
+1. Launching Elm apps **in Elm** instead of JavaScript.
+2. Powering Elm apps with generic, *reusable* ports modules for side effects.
+
+## Installation
+
+Make sure you understand [how Elm and JavaScript interact](https://guide.elm-lang.org/interop/javascript.html).
+
+### Installation: The JavaScript Part
+
+Using [npm](https://www.npmjs.com/):
 
 ```
 $ npm install --save elm-router
 ```
 
-## 2. In `elm-package.json`, import the [ElmRouter](https://github.com/knledg/elm-router/tree/master/lib/elm/ElmRouter) Elm code
+Then add this to your JavaScript:
 
-Add `node_modules/elm-router/lib/elm` to your `source-directories`:
+```javascript
+var elmRouter = require("elm-router");
+elmRouter.start(Elm);
+```
+
+(Not sure where `Elm` comes from? See the [Elm tutorial](https://guide.elm-lang.org/interop/javascript.html).)
+
+### Installation: The Elm Part
+
+```
+$ elm-package install http
+$ elm-package install navigation
+```
+
+**Note:** Exact path to `node_modules` may be different for you below.
+
+#### Add source directory to `elm-package.json`
 
 ```js
-// elm-package.json
-
 {
-    // ...
+    ...
 
     "source-directories": [
-        "../../node_modules/elm-pub-sub-ports/lib/elm", // Exact path to node_modules may be different for you
-        "./"
+        ...
+        "../../node_modules/elm-router/lib/elm"
     ],
 
-    // ...
+    ...
 }
 ```
 
-This will allow `elm-make` to find all of the Elm code.
+#### Include ElmRouter app in `elm-make` command
 
-## 3. Add Routes.elm to your project
+```
+$ elm-make --output elm.js ./MyApp.elm ./MyOtherApp.elm ../node_modules/elm-router/lib/elm/ElmRouter/App.elm
+```
+
+If you're using a build tool like Webpack or Brunch to run `elm-make` for you, [see this guide](/docs/BuildTools.md).
+
+
+#### Add `Routes.elm` template to your project
+
+Use the command line tool. (Or just copy-and-paste [from here](https://github.com/knledg/elm-router/blob/master/lib/elm-templates/Routes.elm).)
 
 ```
 $ npm install -g elm-router
@@ -39,163 +77,53 @@ $ cd /path/to/elm/project    <-- This directory must be in `source-directories` 
 $ elm-router init
 ```
 
-If you don't want to globally install `elm-router` just to create the `Routes.elm` template, here are your options:
+## What do Elm Routes look like?
 
-1. Copy it into your Elm project from [here](https://github.com/knledg/elm-router/blob/master/lib/elm-templates/Routes.elm)
-2. Reference the CLI tool from `node_modules` like this: `../path/to/node_modules/elm-router/bin/elm-router init`
-
-## 4. Add `ElmRouter` to your Elm app configuration
-
-### Using [Webpack](https://webpack.js.org/) with [elm-webpack-project-loader](https://github.com/joeandaverde/elm-webpack-project-loader)
-
-Add this path to the `"main-modules"` section of your `.elmproj` file:
+This JavaScript code can be replaced by the Elm code below:
 
 ```javascript
-{
-  ...
+// Runs on every page
+Elm.MobileMenu.App.worker();
 
-  "main-modules": [
-    ...
+// Code that only runs on contact page:
+Elm.ContactForm.App.embed(document.getElementById('contact_form'));
 
-    "../../node_modules/elm-router/lib/elm/ElmRouter/App.elm"
-  ]
-}
+// Code that only runs on homepage:
+Elm.SearchBar.App.embed(document.getElementById('search_bar'), {
+  placeholder: 'What are you looking for?'
+});
 ```
-
-(Careful, `node_modules` might be in a slightly different location for you.)
-
-### Using Other Build Tools
-
-#### The short version
-
-```
-$ elm-make --output elm.js ./App1.elm ./App2.elm ../node_modules/elm-router/lib/elm/ElmRouter/App.elm
-```
-
-#### The long explanation
-
-`elm-make` bundles your Elm app along with the Elm runtime. (Which is a lot of JavaScript.) If you run `elm-make` for each app separately and then bundle the compiled results, you'll end up bundling multiple copies of the Elm runtime.
-
-To avoid this performance hit, `elm-make` should be passed every one of your Elm apps, which will bundle them together with a single copy of the Elm runtime. Just make sure that this path is one of the paths passed to `elm-make`: `node_modules/elm-router/lib/elm/ElmRouter/App.elm`
-
-## 5. Start the router in your JavaScript
-
-```javascript
-var elmRouter = require("elm-router");
-elmRouter.start(Elm);
-```
-
-`Elm` is the object compiled with `elm-make`, containing all of your project's Elm apps. It's the object with which you would have previously called `Elm.SomeApp.embed(document.getElementById("some-app"))`.
-
-# Adding Routes
-
-`elm-router init` creates a file named `Routes.elm`. Just add your routes there and you're done.
-
-Elm Router follows a "convention over configuration" rule for naming your Elm apps. It appends `.App` to the given name:
-
-| App name in Routes.elm | Elm Router expects this `main` module to exist |
-|------------------------|------------------------------------------------|
-| `Foo`                  | `Foo.App`                                      |
-| `Mobile.Menu`          |  `Mobile.Menu.App`                             |
-
-## Example Routes File
 
 ```elm
-module Routes exposing (routes)
+import Json.Encode exposing (object, string)
 
 
-import Json.Encode exposing (object, string, list, bool, null, float, int)
-import Navigation exposing (Location)
-import ElmRouter.Types exposing (..)
-
-
-routes : Location -> List Route
 routes location =
-  [ Route (OnUrl "^/$") -- Home page
-      -- `Nothing` means no flags for these apps
+  [ Route Immediately
       [ Worker "MobileMenu" Nothing
-      , Embed "SearchBox" "#search_box" Nothing
-
-      -- This app takes a JSON object with a `photos` list and `speed` int as flags
-      , Embed "PhotoSlider" "#photo_slider" <| Just <| object
-          [ ("photos", list [string "photo1.jpg", string "photo2.jpg"])
-          , ("speed", int 500)
-          ]
+      , -- Other apps to run on immediately on page load, no matter the page
       ]
 
-  -- Launch these whenever the URL matches the regex "^/search"
-  , Route (OnUrl "^/search")
-      [ ... ]
+  , Route (OnUrl "^/contact$") -- Regex for contact page
+      [ Embed "ContactForm" "#contact_form" Nothing
+      , -- Other apps on contact page
+      ]
 
-  -- Launch these immediately on page load if the URL matches
-  , Route (OnFirstUrl "^/some-landing-page")
-      [ ... ]
-
-  -- Launch these if an Elm app makes this cmd: Router.routerLaunchRoute "launchLoginModal"
-  , Route (Manually "launchLoginModal")
-      [ ... ]
-
-  -- Always launch these immediately on page load
-  , Route Immediately
-      [ ... ]
+  , Route (OnUrl "^/$") -- Regex for homepage
+      [ Embed "SearchBar" "#search_bar" <|
+          Just <| object
+            [ ( "placeholder", string "What are you looking for?" )
+            ]
+      , -- Other apps on homepage
+      ]
   ]
 ```
 
-## Building a `Route`
+For more information about building out your routes, [see this guide](/docs/SettingUpRoutes.md).
 
-To understand the example above, note the types from `ElmRouter.Types`:
+## Reusable Ports Modules
 
-```elm
-type alias Route =
-  { strategy : RouteStrategy
-  , elmApps : List ElmApp
-  }
-
-type ElmApp
-  = Worker ElmAppName (Maybe Flags)
-  | Embed ElmAppName Selector (Maybe Flags)
-
-
-type RouteStrategy
-  = OnFirstUrl Url -- Launch the apps when ElmRouter initializes if the URL matches the Url regex
-  | OnUrl Url -- Launch the apps every time the URL updates matching the Url regex
-  | Manually String -- Launch the apps every time a the given Cmd is broadcast
-  | Immediately -- Launch the apps when ElmRouter initializes (on page load)
-```
-
-## Adding Ports
-
-Elm Router supports an interface for auto-wiring Elm apps with reusable ports modules.
-
-### Ports modules on NPM
-
-- [elm-local-storage-ports](https://www.npmjs.com/package/elm-local-storage-ports)
-- [elm-dom-ports](https://www.npmjs.com/package/elm-dom-ports)
-- [elm-pub-sub-ports](https://www.npmjs.com/package/elm-pub-sub-ports)
-- [elm-phoenix-websocket-ports](https://www.npmjs.com/package/elm-phoenix-websocket-ports)
-
-### JavaScript Interface
-
-```javascript
-var myPortsModule = {
-  register: function(ports) { ... },
-  samplePortName: "openModal"
-};
-
-var ports = [
-  myPortsModule
-];
-
-elmRouter.start(Elm, ports);
-```
-
-#### `register`
-
-A function that takes the `ports` object of an instantiated Elm app in JavaScript, and "wires up" the ports by calling `ports.somePortName.subscribe(function( ... ) { ... })`.
-
-#### `samplePortName`
-
-The name of one of the ports in the `port module`. (Any one.) This allows Elm Router to automatically inspect Elm apps as they are launched and automatically subscribe the ports.
+For more information on reusable ports modules, [see this guide](/docs/AddingPortsModules.md).
 
 ## Questions or Problems?
 
