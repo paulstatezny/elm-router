@@ -6,8 +6,8 @@ Elm Router follows a "convention over configuration" rule for naming your Elm ap
 
 | App name in Routes.elm | Elm Router expects this `main` module to exist |
 |------------------------|------------------------------------------------|
-| `Foo`                  | `Foo.App`                                      |
-| `Mobile.Menu`          |  `Mobile.Menu.App`                             |
+| `"Foo"`                | `Foo.App`                                      |
+| `"Mobile.Menu"`        |  `Mobile.Menu.App`                             |
 
 ## Example Routes File
 
@@ -24,11 +24,11 @@ routes : Location -> List Route
 routes location =
   [ Route (OnUrl "^/$") -- Home page
       -- `Nothing` means no flags for these apps
-      [ Worker "MobileMenu" Nothing
-      , Embed "SearchBox" "#search_box" Nothing
+      [ Worker "MobileMenu"
+      , Embed "SearchBox" "#search_box"
 
       -- This app takes a JSON object with a `photos` list and `speed` int as flags
-      , Embed "PhotoSlider" "#photo_slider" <| Just <| object
+      , EmbedWithFlags "PhotoSlider" "#photo_slider" <| object
           [ ("photos", list [string "photo1.jpg", string "photo2.jpg"])
           , ("speed", int 500)
           ]
@@ -63,8 +63,10 @@ type alias Route =
   }
 
 type ElmApp
-  = Worker ElmAppName (Maybe Flags)
-  | Embed ElmAppName Selector (Maybe Flags)
+  = Worker ElmAppName
+  | WorkerWithFlags ElmAppName Flags
+  | Embed ElmAppName Selector
+  | EmbedWithFlags ElmAppName Selector Flags
 
 
 type RouteStrategy
