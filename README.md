@@ -121,9 +121,87 @@ routes location =
 
 For more information about building out your routes, [see this guide](/docs/SettingUpRoutes.md).
 
-## Reusable Ports Modules
+## Tell me about these "Reusable Ports Modules"
+
+### Example
+
+Details omitted for brevity.
+
+#### JavaScript
+
+`google-maps-ports.js`:
+```javascript
+function registerPorts(ports) {
+  ports.createGoogleMap.subscribe(function(options) {
+    // Create a Google map
+
+    map.addListener('zoom_changed', function(event) {
+      ports.zoomChanged.send(/* updated map bounds */);
+    });
+  });
+}
+
+module.exports = {
+  register: registerPorts,
+  samplePortName: 'createGoogleMap'
+};
+```
+
+`app.js`:
+```javascript
+elmRouter.start(Elm, [
+  require('./google-maps-ports')
+]);
+```
+
+There is no more JavaScript to write. You don't need to "wire up" any specific Elm app; Elm Router will do that for you.
+
+#### Elm
+
+Multiple Elm apps can take advantage of this supporting JavaScript.
+
+`Ports/GoogleMaps.elm`:
+```elm
+port module Ports.GoogleMaps exposing (..)
+
+
+port createGoogleMap : CreateMapOptions -> Cmd msg
+
+
+port zoomChanged : (MapBounds -> msg) -> Sub msg
+```
+
+`SomeElmApp/App.elm`:
+```elm
+module SomeElmApp.App exposing (main)
+
+
+module Ports.GoogleMaps exposing (..)
+
+
+subscriptions model =
+  zoomChanged ZoomChanged
+
+
+update msg model =
+  case msg of
+    AddMapToPage ->
+      ( model
+      , createGoogleMap defaultMapOptions
+      )
+
+    ZoomChanged newBounds ->
+      -- Do something with newBounds
+```
 
 For more information on reusable ports modules, [see this guide](/docs/AddingPortsModules.md).
+
+### Ports modules on NPM
+
+- [elm-local-storage-ports](https://www.npmjs.com/package/elm-local-storage-ports)
+- [elm-dom-ports](https://www.npmjs.com/package/elm-dom-ports)
+- [elm-pub-sub-ports](https://www.npmjs.com/package/elm-pub-sub-ports)
+- [elm-phoenix-websocket-ports](https://www.npmjs.com/package/elm-phoenix-websocket-ports)
 
 ## Questions or Problems?
 
