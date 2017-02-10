@@ -19,6 +19,7 @@ Elm Router minimizes the JavaScript you'll write by:
 - [Setting Up Routes](https://github.com/knledg/elm-router/blob/master/docs/SettingUpRoutes.md)
 - [Adding Port Modules](https://github.com/knledg/elm-router/blob/master/docs/AddingPortModules.md)
 - [Installation Notes for Build Tools](https://github.com/knledg/elm-router/blob/master/docs/BuildTools.md)
+- [API Reference](https://github.com/knledg/elm-router/blob/master/docs/API.md)
 
 ## Installation
 
