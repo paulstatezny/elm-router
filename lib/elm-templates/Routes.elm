@@ -8,13 +8,13 @@ import ElmRouter.Types exposing (..)
 
 {-| Routes for launching Elm apps.
 
-    See ElmRouter.Types for the full range of ElmApp and RouteStrategy types.
+    See the API Reference for the full range of ElmApp and RouteStrategy types:
+    https://github.com/knledg/elm-router/blob/master/docs/API.md
 
     App names can be namespaced within the name String using "." as such:
     Worker "Foo.Bar" corresponds to `module Foo.Bar`
 
     ElmRouter will launch EVERY route that matches, instead of just the first one it finds.
-    This enables certain code to be launched depending on URL query parameters.
 -}
 routes : Location -> List Route
 routes location =
