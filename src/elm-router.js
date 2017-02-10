@@ -108,7 +108,8 @@ function start(Elm, portModules) {
         if (!container[nameSegment]) {
           throw new Error(
             `Elm module \`${name}.App\` not found. ` +
-            "Did you add it to the necessary config such as `brunch-config.js` or `app.elmproj`?" +
+            "It must not have been included in your `elm-make` command. " +
+            "Did you add it to the necessary config such as `brunch-config.js` or `project.elmproj`? " +
             "Does it export a `main` function?`"
           );
         }
