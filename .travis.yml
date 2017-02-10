@@ -1,0 +1,10 @@
+language: node_js
+install:
+  - npm install -g elm
+node_js:
+  - "4"
+cache: yarn
+cache:
+  yarn: true
+  directories:
+    - node_modules

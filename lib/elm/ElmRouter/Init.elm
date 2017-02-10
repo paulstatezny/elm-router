@@ -16,7 +16,6 @@ init location =
     { location = location
     , routesOnUrl = routesOnUrl routes
     , manualRoutes = manualRoutes routes
-    , routesOnFirstUrl = routesOnFirstUrl routes
     } !
     (immediateRouteCmds location routes)
 
@@ -52,24 +51,6 @@ manualTuple { strategy, elmApps } =
   case strategy of
     Manually routeName ->
       Just (routeName, elmApps)
-
-    _ ->
-      Nothing
-
-
-routesOnFirstUrl : List Route -> List String
-routesOnFirstUrl routes =
-  routes
-  |> List.map .strategy
-  |> List.map urlOnPageLoad
-  |> List.foldl maybeToListAccumulator []
-
-
-urlOnPageLoad : RouteStrategy -> Maybe String
-urlOnPageLoad strategy =
-  case strategy of
-    OnFirstUrl url ->
-      Just url
 
     _ ->
       Nothing
