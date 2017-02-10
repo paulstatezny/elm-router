@@ -167,6 +167,13 @@ type RouteStrategy
 
 Elm Router supports an interface for auto-wiring Elm apps with reusable ports modules.
 
+### Ports modules on NPM
+
+- [elm-local-storage-ports](https://www.npmjs.com/package/elm-local-storage-ports)
+- [elm-dom-ports](https://www.npmjs.com/package/elm-dom-ports)
+- [elm-pub-sub-ports](https://www.npmjs.com/package/elm-pub-sub-ports)
+- [elm-phoenix-websocket-ports](https://www.npmjs.com/package/elm-phoenix-websocket-ports)
+
 ### JavaScript Interface
 
 ```javascript
