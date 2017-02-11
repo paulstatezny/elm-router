@@ -8,7 +8,7 @@ import ElmRouter.Types exposing (..)
 
 routes : Navigation.Location -> List Route
 routes location =
-  [ Route Immediately
+  [ Route OnStart
       [ Worker "HeaderSearchBar"
       ]
 
@@ -31,8 +31,8 @@ routes location =
           ]
       ]
 
-  , Route (Manually "ItemDetailsModal")
+  , Route (OnCmd "ItemDetailsModal")
       [ Embed "Modal" "#modal"
       ]
-  , Route (Manually "SubscribeDrawer") []
+  , Route (OnCmd "SubscribeDrawer") []
   ]

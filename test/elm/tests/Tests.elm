@@ -26,11 +26,11 @@ all =
               |> Dict.keys
               |> Expect.equal ["^/$", "^/contact", "^/foo"]
 
-        , test "manualRoutes contains the correct routes" <|
+        , test "routesOnCmd contains the correct routes" <|
             \() ->
               initEmptyLocation
               |> \(model, cmd) -> model
-              |> .manualRoutes
+              |> .routesOnCmd
               |> Dict.keys
               |> Expect.equal ["ItemDetailsModal", "SubscribeDrawer"]
 
@@ -40,7 +40,7 @@ all =
                 expectedCmd =
                   Cmd.batch
                     [ Cmd.batch
-                        [ Ports.routerLog "launchRoute | Immediately"
+                        [ Ports.routerLog "launchRoute | OnStart"
                         , Ports.routerLog "launchRoute | OnUrl ^/contact"
                         , Ports.routerLog "launchRoute | OnFirstUrl ^/contact"
                         ]
@@ -95,7 +95,7 @@ all =
                         [ Cmd.batch
                             [ Ports.routerEmbed ("Modal", "#modal", Nothing)
                             ]
-                        , Ports.routerLog "launchRoute | Manually ItemDetailsModal"
+                        , Ports.routerLog "launchRoute | OnCmd ItemDetailsModal"
                         ]
                   in
                     sampleModel
