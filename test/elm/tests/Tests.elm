@@ -40,7 +40,7 @@ all =
                 expectedCmd =
                   Cmd.batch
                     [ Cmd.batch
-                        [ Ports.routerLog "launchRoute | Immediately"
+                        [ Ports.routerLog "launchRoute | OnStart"
                         , Ports.routerLog "launchRoute | OnUrl ^/contact"
                         , Ports.routerLog "launchRoute | OnFirstUrl ^/contact"
                         ]

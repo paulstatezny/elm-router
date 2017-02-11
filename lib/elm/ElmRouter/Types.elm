@@ -23,7 +23,7 @@ type RouteStrategy
   = OnFirstUrl Url -- Launch the apps when ElmRouter initializes if the URL matches the Url regex
   | OnUrl Url -- Launch the apps every time the URL updates matching the Url regex
   | OnCmd String -- Launch the apps every time the Ports.Router.routerLaunchRoute Cmd is dispatched with the given string
-  | Immediately -- Launch the apps when ElmRouter initializes
+  | OnStart -- Launch the apps when elmRouter.start() is called
 
 
 type Msg

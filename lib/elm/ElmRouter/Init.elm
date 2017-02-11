@@ -78,7 +78,7 @@ immediateRouteCmds location routes =
 launchImmediately : Location -> Route -> Bool
 launchImmediately location { strategy } =
   case strategy of
-    Immediately ->
+    OnStart ->
       True
 
     OnFirstUrl url ->

@@ -46,8 +46,8 @@ routes location =
   , Route (OnCmd "launchLoginModal")
       [ ... ]
 
-  -- Always launch these immediately on page load
-  , Route Immediately
+  -- Launch these when elmRouter.start() is called, no matter the URL
+  , Route OnStart
       [ ... ]
   ]
 ```
@@ -73,5 +73,5 @@ type RouteStrategy
   = OnFirstUrl Url -- Launch the apps when ElmRouter initializes if the URL matches the Url regex
   | OnUrl Url -- Launch the apps every time the URL updates matching the Url regex
   | OnCmd String -- Launch the apps every time a the given Cmd is broadcast
-  | Immediately -- Launch the apps when ElmRouter initializes (on page load)
+  | OnStart -- Launch the apps when elmRouter.start() is called
 ```

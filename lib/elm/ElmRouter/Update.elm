@@ -128,5 +128,5 @@ strategyToString strategy =
     OnCmd routeName ->
       "OnCmd " ++ routeName
 
-    Immediately ->
-      "Immediately"
+    OnStart ->
+      "OnStart"

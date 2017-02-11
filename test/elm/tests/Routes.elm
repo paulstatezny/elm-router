@@ -8,7 +8,7 @@ import ElmRouter.Types exposing (..)
 
 routes : Navigation.Location -> List Route
 routes location =
-  [ Route Immediately
+  [ Route OnStart
       [ Worker "HeaderSearchBar"
       ]
 
