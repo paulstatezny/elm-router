@@ -15,7 +15,7 @@ init location =
   in
     { location = location
     , routesOnUrl = routesOnUrl routes
-    , manualRoutes = manualRoutes routes
+    , routesOnCmd = routesOnCmd routes
     } !
     (immediateRouteCmds location routes)
 
@@ -38,18 +38,18 @@ onUrlTuple { strategy, elmApps } =
       Nothing
 
 
-manualRoutes : List Route -> Dict String (List ElmApp)
-manualRoutes routes =
+routesOnCmd : List Route -> Dict String (List ElmApp)
+routesOnCmd routes =
   routes
-  |> List.map manualTuple
+  |> List.map onCmdTuple
   |> List.foldl maybeToListAccumulator []
   |> Dict.fromList
 
 
-manualTuple : Route -> Maybe (Url, List ElmApp)
-manualTuple { strategy, elmApps } =
+onCmdTuple : Route -> Maybe (Url, List ElmApp)
+onCmdTuple { strategy, elmApps } =
   case strategy of
-    Manually routeName ->
+    OnCmd routeName ->
       Just (routeName, elmApps)
 
     _ ->

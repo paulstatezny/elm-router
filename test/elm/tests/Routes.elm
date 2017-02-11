@@ -31,8 +31,8 @@ routes location =
           ]
       ]
 
-  , Route (Manually "ItemDetailsModal")
+  , Route (OnCmd "ItemDetailsModal")
       [ Embed "Modal" "#modal"
       ]
-  , Route (Manually "SubscribeDrawer") []
+  , Route (OnCmd "SubscribeDrawer") []
   ]

@@ -22,7 +22,7 @@ type ElmApp
 type RouteStrategy
   = OnFirstUrl Url -- Launch the apps when ElmRouter initializes if the URL matches the Url regex
   | OnUrl Url -- Launch the apps every time the URL updates matching the Url regex
-  | Manually String -- Launch the apps every time Ports.Router.routerLaunchRoute is dispatched with the given string
+  | OnCmd String -- Launch the apps every time the Ports.Router.routerLaunchRoute Cmd is dispatched with the given string
   | Immediately -- Launch the apps when ElmRouter initializes
 
 
@@ -40,5 +40,5 @@ type alias Route =
 type alias Model =
   { location : Location
   , routesOnUrl : Dict Url (List ElmApp)
-  , manualRoutes : Dict String (List ElmApp)
+  , routesOnCmd : Dict String (List ElmApp)
   }

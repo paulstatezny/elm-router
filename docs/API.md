@@ -88,8 +88,8 @@ Route (OnUrl "/user")
 type RouteStrategy
   = OnFirstUrl Url -- Launch the apps when ElmRouter initializes if the URL matches the Url regex
   | OnUrl Url -- Launch the apps every time the URL updates matching the Url regex
-  | Manually String -- Launch the apps every time Ports.Router.routerLaunchRoute is dispatched with the given string
-  | Immediately -- Launch the apps when ElmRouter initializes
+  | OnCmd String -- Launch the apps every time Ports.Router.routerLaunchRoute is dispatched with the given string
+  | Immediately -- Launch the apps immediately when ElmRouter initializes
 ```
 
 ## ElmApp
@@ -146,13 +146,13 @@ Change the URL and add a new history entry. Basically a passthrough for [`histor
 port routerLaunchRoute : String -> Cmd msg
 ```
 
-Manually launch all [`Route`](#route)s using the `Manually` [`RouteStrategy`](#routestrategy) with a matching string.
+Launch all [`Route`](#route)s using the `OnCmd` [`RouteStrategy`](#routestrategy) with a matching string.
 
 Can be used to launch, for example, a modal window:
 
 ```elm
 -- Routes.elm
-Route (Manually "ItemDetailsModal")
+Route (OnCmd "ItemDetailsModal")
   [ -- Elm apps to launch for the modal
   ]
 

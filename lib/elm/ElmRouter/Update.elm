@@ -41,15 +41,15 @@ update msg model =
               )
 
         Just (LaunchRoute routeName) ->
-          -- Launch a route with Manual strategy
-          if Dict.member routeName model.manualRoutes then
-            model.manualRoutes
+          -- Launch a route with OnCmd strategy
+          if Dict.member routeName model.routesOnCmd then
+            model.routesOnCmd
             |> Dict.get routeName
             |> Maybe.withDefault []
             |> List.map appCmd
             |> Cmd.batch
             |> \cmd ->
-                 model ! [cmd, routeLogCmd <| Manually routeName]
+                 model ! [cmd, routeLogCmd <| OnCmd routeName]
 
           else
             model ! []
@@ -125,8 +125,8 @@ strategyToString strategy =
     OnUrl url ->
       "OnUrl " ++ url
 
-    Manually routeName ->
-      "Manually " ++ routeName
+    OnCmd routeName ->
+      "OnCmd " ++ routeName
 
     Immediately ->
       "Immediately"
