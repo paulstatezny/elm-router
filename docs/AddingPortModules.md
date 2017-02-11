@@ -13,7 +13,7 @@ Elm Router supports an interface for auto-wiring Elm apps with port modules. Wit
 
 ```javascript
 var myPortsModule = {
-  register: function(ports) { ... },
+  register: function(ports, log) { ... },
   samplePortName: "openModal"
 };
 
@@ -24,9 +24,38 @@ var ports = [
 elmRouter.start(Elm, ports);
 ```
 
-### `register`
+### `register(ports, log)`
 
 A function that takes the `ports` object of an instantiated Elm app in JavaScript, and "wires up" the ports by calling `ports.somePortName.subscribe(function( ... ) { ... })`.
+
+#### `ports`
+
+This will be the `ports` property of any Elm app which needs wired up to these ports.
+
+#### `log` (Optional)
+
+For `log`, Elm Router will pass a function which will log to the console **if and only if** `elmRouter.logPorts()` has been called. (Intended for debug use.)
+
+The intended use is as such:
+
+```javascript
+log(nameOfPort, arg1, arg2, ...)
+```
+
+You can pass `log()` an arbitrary amount of arguments, but you should probably pass exactly what was passed to the port. Like this:
+
+```javascript
+var myPorts = {
+  register: function(ports, log) {
+    ports.submitForm.subscribe(function([name, email]) {
+      log('submitForm', name, email);
+
+      // ...
+    });
+  },
+  samplePortName: 'submitForm'
+};
+```
 
 ### `samplePortName`
 

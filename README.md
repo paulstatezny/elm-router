@@ -77,17 +77,15 @@ If you're using a build tool like Webpack or Brunch to run `elm-make` for you, [
 
 #### Add `Routes.elm` template to your project
 
-Use the command line tool. (Or just copy-and-paste [from here](https://github.com/knledg/elm-router/blob/master/lib/elm-templates/Routes.elm).)
-
 ```
 $ npm install -g elm-router
 $ cd /path/to/elm/project    <-- This directory must be in `source-directories` in elm-package.json
 $ elm-router init
 ```
 
-## What do Elm Routes look like?
+(Or just copy-and-paste [from here](https://github.com/knledg/elm-router/blob/master/lib/elm-templates/Routes.elm).)
 
-Replace this JavaScript code:
+## What do Elm Routes look like?
 
 ```javascript
 // Code that only runs on contact page:
@@ -97,7 +95,7 @@ Elm.ContactForm.App.embed(document.getElementById('contact_form'), {
 });
 ```
 
-With this Elm code:
+Is replaced by this:
 
 ```elm
 import Json.Encode exposing (object, string, bool)

@@ -35,6 +35,24 @@ The `Elm` object compiled by `elm-make` into JavaScript.
 
 An `Array` of [port modules](#port-modules).
 
+### logPorts([portOrApp1[, portOrApp2[, ...]]])
+
+**(For debug use only, obviously.)**
+
+Logs ports activity to the console.
+
+Accepts an arbitrary number of "whitelist" arguments, which can be either (1) the name of an Elm app or (2) the name of a port.
+
+```javascript
+var elmRouter = require('elm-router');
+
+elmRouter.logPorts(); // Log all ports activity in the console
+elmRouter.logPorts('SearchBar'); // Log only ports from the Elm app called SearchBar
+elmRouter.logPorts('websocketSend'); // Log only ports activity of the port called websocketSend
+elmRouter.logPorts('websocketSend', 'addClass'); // Log the websocketSend and addClass ports
+elmRouter.logPorts('MyApp', 'MyOtherApp', 'addClass', 'removeClass'); // Log activity for each of these apps and ports
+```
+
 ## Port Modules
 
 Port modules must be in this form:
