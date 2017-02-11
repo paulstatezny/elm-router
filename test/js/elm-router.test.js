@@ -83,5 +83,45 @@ describe('elm-router', () => {
     test('registers ports for the worker', () => {
       expect(mockInstantiatedWorkers.TestWorker.ports.testCmd.subscribe).toHaveBeenCalledWith(testCmd);
     });
+
+    test('throws an Error if `register` was not defined', () => {
+
+    });
+
+    test('throws an Error if `samplePortName` was not defined', () => {
+
+    });
+  });
+
+  describe('routerEmbed', () => {
+    test('embeds an Html app if it exists', () => {
+
+    });
+
+    test('registers ports for the embedded app', () => {
+
+    });
+
+    test('throws an Error if `register` was not defined', () => {
+
+    });
+
+    test('throws an Error if `samplePortName` was not defined', () => {
+
+    });
+
+    test('throws an Error if a DOM node is not found matching the selector', () => {
+
+    });
+  });
+
+  describe('routerBroadcastUrlUpdate', () => {
+    test('send an urlUpdate port message to all live Elm apps with `urlUpdate`', () => {
+
+    });
+
+    test('defaults `username`, `password`, and `origin` to an empty string if undefined/falsy (IE10 issue)', () => {
+
+    });
   });
 });
