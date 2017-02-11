@@ -142,6 +142,12 @@ describe('elm-router', () => {
       expect(mockInstantiatedWorkers.TestWorker.ports.testCmd.subscribe)
         .toHaveBeenCalledWith(testCmd);
     });
+
+    test('throws an Error if the given app does not exist', () => {
+      expect(() => {
+        port('routerWorker')(['NotAnApp']);
+      }).toThrow();
+    });
   });
 
   describe('routerEmbed', () => {
@@ -161,6 +167,14 @@ describe('elm-router', () => {
 
       expect(mockInstantiatedEmbeds.TestEmbeddableApp.ports.testEmbedCmd.subscribe)
         .toHaveBeenCalledWith(testEmbedCmd);
+    });
+
+    test('throws an Error if the given app does not exist', () => {
+      document.querySelector = jest.fn(() => mockDomNode);
+
+      expect(() => {
+        port('routerEmbed')(['NotAnApp', '#app_container']);
+      }).toThrow();
     });
 
     test('throws an Error if a DOM node is not found matching the selector', () => {
