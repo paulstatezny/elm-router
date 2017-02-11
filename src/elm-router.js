@@ -7,7 +7,6 @@
 const { logFor, debug } = require("./log-ports");
 const routerPorts = require("./router-ports");
 const log = logFor("ElmRouter");
-const portsObjects = [];
 
 module.exports = {
   start: start,
@@ -21,6 +20,7 @@ module.exports = {
  * @param {Array}  portModules  An array of port module objects with `register` and `samplePortName`
  */
 function start(Elm, portModules) {
+  const portsObjects = [];
   portModules = portModules || [];
   portModules.push(routerPorts);
 
@@ -138,6 +138,8 @@ function start(Elm, portModules) {
    */
   function registerPorts(ports, elmAppName) {
     const log = logFor(elmAppName);
+
+    portsObjects.push(ports);
 
     portModules.forEach(portModule => {
       const { register, samplePortName } = portModule;
