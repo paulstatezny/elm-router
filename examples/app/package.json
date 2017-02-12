@@ -1,0 +1,12 @@
+{
+  "name": "elm-router-example-app",
+  "version": "0.0.0",
+  "description": "Elm Router example app",
+  "main": "./js/app.js",
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "elm-webpack-project-loader": "^2.2.0",
+    "webpack": "^2.2.1"
+  }
+}

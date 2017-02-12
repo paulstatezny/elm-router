@@ -1,0 +1,7 @@
+{
+  "elm-package-dir": "./",
+  "main-modules": [
+    "../../node_modules/elm-router/lib/elm/ElmRouter/App.elm",
+    "./apps/Test/App.elm"
+  ]
+}
