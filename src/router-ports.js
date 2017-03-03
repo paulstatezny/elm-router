@@ -30,4 +30,8 @@ function register(ports, log, routerPorts) {
   ports.routerLaunchRoute.subscribe(routeName => {
     routerPorts.routerReceiveCmd.send(["launchRoute", routeName]);
   });
+
+  ports.windowLocationHref.subscribe(url => {
+    window.location.href = url;
+  });
 }
