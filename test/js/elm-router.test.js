@@ -8,6 +8,7 @@ var mockInstantiatedWorkers = {};
 var mockInstantiatedEmbeds = {};
 var originalDocument = {
   querySelector: document.querySelector,
+  querySelectorAll: document.querySelectorAll,
   createElement: document.createElement
 };
 
@@ -60,6 +61,7 @@ function testEmbedCmd() {
 describe('elm-router', () => {
   afterAll(() => {
     document.querySelector = originalDocument.querySelector;
+    document.querySelectorAll = originalDocument.querySelectorAll;
     document.createElement = originalDocument.createElement;
   });
 
@@ -87,6 +89,7 @@ describe('elm-router', () => {
     mockWorker('ElmRouter', [
       'routerWorker',
       'routerEmbed',
+      'routerEmbedMany',
       'routerLog',
       'routerBroadcastUrlUpdate'
     ], [
@@ -182,6 +185,63 @@ describe('elm-router', () => {
 
       expect(() => {
         port('routerEmbed')(['TestEmbeddableApp', '#app_container']);
+      }).toThrow();
+    });
+  });
+
+  describe('routerEmbedMany', () => {
+    let mockDomNode1 = {};
+    let mockDomNode2 = {};
+
+    test('embeds an Html app in each of the dom nodes matching the selector', () => {
+      document.querySelectorAll = jest.fn(() => [mockDomNode1, mockDomNode2]);
+
+      port('routerEmbedMany')(['TestEmbeddableApp', '.numerous_app_container']);
+
+      expect(mockElm.TestEmbeddableApp.App.embed)
+        .toHaveBeenCalledWith(mockDomNode1, undefined); // Called with no flags
+
+      expect(mockElm.TestEmbeddableApp.App.embed)
+        .toHaveBeenCalledWith(mockDomNode2, undefined); // Called with no flags
+    });
+
+    test('registers ports for each of the embedded apps', () => {
+      document.querySelectorAll = jest.fn(() => [mockDomNode1, mockDomNode2]);
+
+      port('routerEmbedMany')(['TestEmbeddableApp', '.numerous_app_container']);
+
+      expect(mockInstantiatedEmbeds.TestEmbeddableApp.ports.testEmbedCmd.subscribe)
+        .toHaveBeenCalledWith(testEmbedCmd);
+
+      expect(mockInstantiatedEmbeds.TestEmbeddableApp.ports.testEmbedCmd.subscribe)
+        .toHaveBeenCalledTimes(2);
+    });
+
+    test('passes flags to each of the embedded apps', () => {
+      document.querySelectorAll = jest.fn(() => [mockDomNode1, mockDomNode2]);
+
+      port('routerEmbedMany')(['TestEmbeddableApp', '.numerous_app_container', {foo: "bar"}]);
+
+      expect(mockElm.TestEmbeddableApp.App.embed)
+        .toHaveBeenCalledWith(mockDomNode1, {foo: "bar"});
+
+      expect(mockElm.TestEmbeddableApp.App.embed)
+        .toHaveBeenCalledWith(mockDomNode2, {foo: "bar"});
+    });
+
+    test('throws an Error if the given app does not exist', () => {
+      document.querySelectorAll = jest.fn(() => mockDomNode);
+
+      expect(() => {
+        port('routerEmbedMany')(['NotAnApp', '.numerous_app_container']);
+      }).toThrow();
+    });
+
+    test('throws an Error if no DOM nodes are not found matching the selector', () => {
+      document.querySelectorAll = jest.fn(() => []);
+
+      expect(() => {
+        port('routerEmbedMany')(['TestEmbeddableApp', '.numerous_app_container']);
       }).toThrow();
     });
   });

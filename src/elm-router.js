@@ -118,8 +118,8 @@ function start(Elm, portModules) {
     const App = elmApp(name);
 
     for (let i = 0; i < domNodes.length; i++) {
-      const application = App.embed(domNodes[i]);
-      registerPorts(application.ports, name)
+      const application = App.embed(domNodes[i], flags);
+      registerPorts(application.ports, name);
     }
   }
 
