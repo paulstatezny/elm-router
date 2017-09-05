@@ -14,6 +14,7 @@ port routerWorker : (ElmAppName, Maybe Flags) -> Cmd msg
 port routerEmbed : (ElmAppName, Selector, Maybe Flags) -> Cmd msg
 port routerLog : String -> Cmd msg
 port routerBroadcastUrlUpdate : Navigation.Location -> Cmd msg
+port routerEmbedMany : (ElmAppName, Selector, Maybe Flags) -> Cmd msg
 
 
 -- Receive from JS (Sub)

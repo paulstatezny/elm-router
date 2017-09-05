@@ -33,6 +33,10 @@ function start(Elm, portModules) {
     ([name, selector, flags]) => embed(name, selector, flags || undefined)
   );
 
+  elmRouter.ports.routerEmbedMany.subscribe(
+    ([name, selector, flags]) => embedMany(name, selector, flags || undefined)
+  );
+
   elmRouter.ports.routerLog.subscribe(message => {
     log(message);
   });
@@ -87,6 +91,36 @@ function start(Elm, portModules) {
     const App = elmApp(name);
     const application = App.embed(domNode, flags);
     registerPorts(application.ports, name);
+  }
+
+  /**
+  * Embed an Elm app into many different dom nodes of the same selector
+  * @param {String}          name      The name of the Elm app
+  * @param {String}          selector  A selector for many DOM element
+  * @param {Object|Function} flags     Either a flags object or a function taking `app` and returning a flags object
+  *
+  * @throw {Error} the selector must correspond to existing DOM nodes.
+  * @throw {Error} Elm[name].App must be an Elm module with `main` defined.
+  */
+  function embedMany(name, selector, flags) {
+    if (flags) {
+      log("embedMany " + name, selector, flags);
+    } else {
+      log("embedMany " + name, selector);
+    }
+
+    const domNodes = document.querySelectorAll(selector);
+
+    if (!domNodes.length) {
+      throw new Error(`Elm app ${name} couldn't be launched. DOM domNodes not found with selector ${selector}.`);
+    }
+
+    const App = elmApp(name);
+
+    for (let i = 0; i < domNodes.length; i++) {
+      const application = App.embed(domNodes[i], flags);
+      registerPorts(application.ports, name);
+    }
   }
 
   /**

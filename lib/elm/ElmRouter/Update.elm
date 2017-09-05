@@ -107,6 +107,12 @@ appCmd elmApp =
     EmbedWithFlags elmAppName selector flags ->
       Ports.routerEmbed (elmAppName, selector, Just flags)
 
+    EmbedMany elmAppName selector ->
+      Ports.routerEmbedMany (elmAppName, selector, Nothing)
+
+    EmbedManyWithFlags elmAppName selector flags ->
+      Ports.routerEmbedMany (elmAppName, selector, Just flags)
+
 
 routeLogCmd : RouteStrategy -> Cmd Msg
 routeLogCmd strategy =

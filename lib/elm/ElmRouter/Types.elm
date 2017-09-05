@@ -17,6 +17,8 @@ type ElmApp
   | WorkerWithFlags ElmAppName Flags
   | Embed ElmAppName Selector
   | EmbedWithFlags ElmAppName Selector Flags
+  | EmbedMany ElmAppName Selector
+  | EmbedManyWithFlags ElmAppName Selector Flags
 
 
 type RouteStrategy
