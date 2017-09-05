@@ -12,6 +12,7 @@ var originalDocument = {
 };
 
 function mockInstantiatedApp(cmdPorts, subPorts) {
+  console.log(cmdPorts);
   const app = {ports: {}};
 
   cmdPorts.forEach(port => {
