@@ -77,3 +77,49 @@ type RouteStrategy
   | OnCmd String -- Launch the apps every time a the given Cmd is broadcast
   | OnStart -- Launch the apps when elmRouter.start() is called
 ```
+
+## Embed Many
+
+For embeding a single Elm application into many DOM nodes, we lose reference to the Dom node. Sometimes we will want to get
+data about the node we embeded into. So, for EmbedMany we always ned flags back down.
+
+```
+routes : Location -> List Route
+routes location =
+  [ Route (OnUrl "^many-embeds")
+      [ EmbedMany "SomeApp" ".my-selector"
+      ]
+  ]
+```
+
+using a default type `DomNodeFlags`:
+
+```
+moudle SomeApp exposing (..)
+
+import ElmRouter.Types (DomNodeFlags)
+
+init : DomNodeFlags -> (Model, Cmd Msg)
+init flags =
+  function body
+
+```
+
+
+using a custom flag data type:
+
+```
+moudle SomeApp exposing (..)
+
+import ElmRouter.Types (DomNode)
+
+type alias Flags =
+  { node : DomNode
+  , myFalg : String
+  }
+
+init : Flags -> (Model, Cmd Msg)
+init flags =
+  function body
+
+```
