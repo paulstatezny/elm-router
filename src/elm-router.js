@@ -107,6 +107,7 @@ function start(Elm, portModules) {
       log("embedMany " + name, selector, flags);
     } else {
       log("embedMany " + name, selector);
+      flags = {};
     }
 
     const domNodes = document.querySelectorAll(selector);
@@ -118,6 +119,12 @@ function start(Elm, portModules) {
     const App = elmApp(name);
 
     for (let i = 0; i < domNodes.length; i++) {
+      flags["node"] = {
+        className: domNodes[i].className,
+        nodeId: domNodes[i].id,
+        data: toDataField(domNodes[i]),
+      }
+
       const application = App.embed(domNodes[i], flags);
       registerPorts(application.ports, name);
     }
@@ -225,5 +232,11 @@ function start(Elm, portModules) {
         ports.urlUpdate.send(location);
       }
     });
+  }
+
+  function toDataField(node) {
+    return Object.keys(node.dataset || {}).map(
+      key => [key, node.dataset[key]]
+    );
   }
 }
