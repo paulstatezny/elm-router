@@ -44,3 +44,14 @@ type alias Model =
   , routesOnUrl : Dict Url (List ElmApp)
   , routesOnCmd : Dict String (List ElmApp)
   }
+
+type alias DomNode =
+  { className : String
+  , nodeId : String
+  , data : List (String, String)
+  }
+
+type alias DomNodeFlags =
+  { node : DomNode
+  }
+

@@ -190,8 +190,8 @@ describe('elm-router', () => {
   });
 
   describe('routerEmbedMany', () => {
-    let mockDomNode1 = {};
-    let mockDomNode2 = {};
+    let mockDomNode1 = {className: "foo-class one-class", id: "id-1", dataset: {foo: "one"}};
+    let mockDomNode2 = {className: "foo-class two-class", id: "id-2", dataset: {foo: "two"}};
 
     test('embeds an Html app in each of the dom nodes matching the selector', () => {
       document.querySelectorAll = jest.fn(() => [mockDomNode1, mockDomNode2]);
@@ -199,10 +199,10 @@ describe('elm-router', () => {
       port('routerEmbedMany')(['TestEmbeddableApp', '.numerous_app_container']);
 
       expect(mockElm.TestEmbeddableApp.App.embed)
-        .toHaveBeenCalledWith(mockDomNode1, undefined); // Called with no flags
+        .toHaveBeenCalledWith(mockDomNode1, expect.anything());
 
       expect(mockElm.TestEmbeddableApp.App.embed)
-        .toHaveBeenCalledWith(mockDomNode2, undefined); // Called with no flags
+        .toHaveBeenCalledWith(mockDomNode2, expect.anything());
     });
 
     test('registers ports for each of the embedded apps', () => {
@@ -223,10 +223,10 @@ describe('elm-router', () => {
       port('routerEmbedMany')(['TestEmbeddableApp', '.numerous_app_container', {foo: "bar"}]);
 
       expect(mockElm.TestEmbeddableApp.App.embed)
-        .toHaveBeenCalledWith(mockDomNode1, {foo: "bar"});
+        .toHaveBeenCalledWith(mockDomNode1, {foo: "bar", node: expect.anything()});
 
       expect(mockElm.TestEmbeddableApp.App.embed)
-        .toHaveBeenCalledWith(mockDomNode2, {foo: "bar"});
+        .toHaveBeenCalledWith(mockDomNode2, {foo: "bar", node: expect.anything()});
     });
 
     test('throws an Error if the given app does not exist', () => {
