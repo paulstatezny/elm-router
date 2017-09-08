@@ -1,6 +1,6 @@
 {
   "name": "elm-router",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A router for launching Elm apps",
   "main": "lib/js/elm-router.js",
   "scripts": {
