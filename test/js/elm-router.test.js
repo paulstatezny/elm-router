@@ -179,14 +179,6 @@ describe('elm-router', () => {
         port('routerEmbed')(['NotAnApp', '#app_container']);
       }).toThrow();
     });
-
-    test('throws an Error if a DOM node is not found matching the selector', () => {
-      document.querySelector = jest.fn(() => null);
-
-      expect(() => {
-        port('routerEmbed')(['TestEmbeddableApp', '#app_container']);
-      }).toThrow();
-    });
   });
 
   describe('routerEmbedMany', () => {
@@ -234,14 +226,6 @@ describe('elm-router', () => {
 
       expect(() => {
         port('routerEmbedMany')(['NotAnApp', '.numerous_app_container']);
-      }).toThrow();
-    });
-
-    test('throws an Error if no DOM nodes are not found matching the selector', () => {
-      document.querySelectorAll = jest.fn(() => []);
-
-      expect(() => {
-        port('routerEmbedMany')(['TestEmbeddableApp', '.numerous_app_container']);
       }).toThrow();
     });
   });
