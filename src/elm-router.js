@@ -72,7 +72,6 @@ function start(Elm, portModules) {
    * @param  {String}          selector A selector for a DOM element
    * @param  {Object|Function} flags    Either a flags object or a function taking `app` and returning a flags object
    *
-   * @throws {Error}  The selector must correspond to an existing DOM node.
    * @throws {Error}  Elm[name].App must be an Elm module with `main` defined.
    */
   function embed(name, selector, flags) {
@@ -85,12 +84,12 @@ function start(Elm, portModules) {
     const domNode = document.querySelector(selector);
 
     if (!domNode) {
-      throw new Error(`Elm app ${name} couldn't be launched. DOM node not found with selector ${selector}.`);
+      console.warn(`Elm app ${name} couldn't be launched. DOM node not found with selector ${selector}.`)
+    } else {
+      const App = elmApp(name);
+      const application = App.embed(domNode, flags);
+      registerPorts(application.ports, name);
     }
-
-    const App = elmApp(name);
-    const application = App.embed(domNode, flags);
-    registerPorts(application.ports, name);
   }
 
   /**
@@ -99,7 +98,6 @@ function start(Elm, portModules) {
   * @param {String}          selector  A selector for many DOM element
   * @param {Object|Function} flags     Either a flags object or a function taking `app` and returning a flags object
   *
-  * @throw {Error} the selector must correspond to existing DOM nodes.
   * @throw {Error} Elm[name].App must be an Elm module with `main` defined.
   */
   function embedMany(name, selector, flags) {
@@ -113,7 +111,7 @@ function start(Elm, portModules) {
     const domNodes = document.querySelectorAll(selector);
 
     if (!domNodes.length) {
-      throw new Error(`Elm app ${name} couldn't be launched. DOM domNodes not found with selector ${selector}.`);
+      console.warn(`Elm app ${name} couldn't be launched. DOM domNodes not found with selector ${selector}.`);
     }
 
     const App = elmApp(name);
