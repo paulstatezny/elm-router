@@ -189,15 +189,7 @@ update msg model =
 port routerSetLocation : String -> Cmd msg
 ```
 
-Will set the location and load that new page. This will require the full url to work correctly.
-
-#### `routerSetLocationRelative`
-
-```elm
-port routerSetLocationRelative : String -> Cmd msg
-```
-
-Will set the location and load that new page. This assumes you want to stay within the same origin. Useful for when you want to go to a page that is part of your current site.
+Will set the location and load that new page. Given a realative path the browser know to navigate within the same origin.
 
 ### Subscriptions
 

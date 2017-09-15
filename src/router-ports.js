@@ -24,12 +24,8 @@ function register(ports, log, routerPorts) {
   });
 
   ports.routerSetLocation.subscribe(url => {
-    routerPorts.routerReceiveCmd.sned(["load", url])
+    routerPorts.routerReceiveCmd.send(["load", url])
   });
-
-  ports.routerSetLocationRelative.subscribe(path => {
-    routerPorts.routerReceiveCmd.send(["load", location.origin + path])
-  })
 
   ports.routerNewUrl.subscribe(url => {
     routerPorts.routerReceiveCmd.send(["newUrl", url]);
