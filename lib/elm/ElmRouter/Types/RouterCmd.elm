@@ -9,6 +9,7 @@ type RouterCmd
   | ModifyUrl String
   | NewUrl String
   | LaunchRoute String
+  | Load String
 
 
 fromStringAndPayload : String -> JD.Value -> Maybe RouterCmd
@@ -25,6 +26,9 @@ fromStringAndPayload string payload =
 
     ("launchRoute", Ok routeName) ->
       Just (LaunchRoute routeName)
+
+    ("load", Ok url) ->
+      Just (Load url)
 
     _ ->
       Nothing

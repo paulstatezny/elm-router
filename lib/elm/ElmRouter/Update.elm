@@ -40,6 +40,9 @@ update msg model =
               , Navigation.newUrl url
               )
 
+        Just (Load url) ->
+          ( model, Navigation.load url )
+
         Just (LaunchRoute routeName) ->
           -- Launch a route with OnCmd strategy
           if Dict.member routeName model.routesOnCmd then
