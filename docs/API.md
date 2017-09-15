@@ -182,6 +182,15 @@ update msg model =
       (model, Ports.Router.routerLaunchRoute "ItemDetailsModal")
 ```
 
+
+#### `routerSetLocation`
+
+```elm
+port routerSetLocation : String -> Cmd msg
+```
+
+Will set the location and load that new page. Given a realative path the browser knows to navigate within the same origin.
+
 ### Subscriptions
 
 #### `urlUpdate`

@@ -13,6 +13,7 @@ port routerModifyUrl : String -> Cmd msg
 port routerNewUrl : String -> Cmd msg
 port routerLaunchRoute : String -> Cmd msg -- Launch a route using the OnCmd strategy
 port windowLocationHref : String -> Cmd msg -- Set window.location.href to the String
+port routerSetLocation : String -> Cmd msg
 
 
 -- Receive from JS (Sub)
