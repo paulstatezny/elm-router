@@ -189,7 +189,7 @@ update msg model =
 port routerSetLocation : String -> Cmd msg
 ```
 
-Will set the location and load that new page. Given a realative path the browser know to navigate within the same origin.
+Will set the location and load that new page. Given a realative path the browser knows to navigate within the same origin.
 
 ### Subscriptions
 
