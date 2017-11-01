@@ -118,6 +118,8 @@ type ElmApp
   | WorkerWithFlags ElmAppName Flags -- Launch a worker Elm app created by Platform.programWithFlags
   | Embed ElmAppName Selector -- Embed an Elm app created by Html.program
   | EmbedWithFlags ElmAppName Selector Flags -- Embed an Elm app created by Html.programWithFlags
+  | EmbedMany ElmAppName Selector -- Embed an Elm app created by Html.program into every DOM node that matches the selector
+  | EmbedWithFlags ElmAppName Selector Flags -- Same as EmbedMany, but with Flags
 ```
 
 ## Ports.Router
