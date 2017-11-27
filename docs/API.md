@@ -122,6 +122,24 @@ type ElmApp
   | EmbedWithFlags ElmAppName Selector Flags -- Same as EmbedMany, but with Flags
 ```
 
+## DomNode and DomNodeFlags
+
+Embedded apps are passed information about the DOM node that they're embedded in. This is helpful for passing in information to the Elm app on initialization via `data-` attributes on the HTML element.
+
+`DomNodeFlags` is the shape of the flags passed to `Html.programWithFlags`.
+
+```elm
+type alias DomNode =
+  { className : String
+  , nodeId : String
+  , data : List (String, String)
+  }
+
+type alias DomNodeFlags =
+  { node : DomNode
+  }
+```
+
 ## Ports.Router
 
 `Ports.Router` follows the same design as all Elm Router [port modules](#port-modules). Its purpose is to allow Elm apps to manually navigate the browser URL, as well as letting them know when the URL is updated by another Elm app.
