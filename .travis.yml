@@ -4,7 +4,7 @@ install:
   - npm install -g yarn
   - yarn
 node_js:
-  - "4"
+  - "6"
 cache: yarn
 cache:
   yarn: true
