@@ -1,4 +1,4 @@
-# Elm Router [![Build Status](https://travis-ci.org/knledg/elm-router.svg?branch=master)](https://travis-ci.org/knledg/elm-router)
+# Elm Router [![Build Status](https://travis-ci.org/paulstatezny/elm-router.svg?branch=master)](https://travis-ci.org/paulstatezny/elm-router)
 
 **Write less JavaScript.**
 
@@ -15,11 +15,11 @@ Elm Router minimizes the JavaScript you'll write by:
 
 ## Docs
 
-- [Installation](https://github.com/knledg/elm-router#installation)
-- [Setting Up Routes](https://github.com/knledg/elm-router/blob/master/docs/SettingUpRoutes.md)
-- [Adding Port Modules](https://github.com/knledg/elm-router/blob/master/docs/AddingPortModules.md)
-- [Installation Notes for Build Tools](https://github.com/knledg/elm-router/blob/master/docs/BuildTools.md)
-- [API Reference](https://github.com/knledg/elm-router/blob/master/docs/API.md)
+- [Installation](https://github.com/paulstatezny/elm-router#installation)
+- [Setting Up Routes](https://github.com/paulstatezny/elm-router/blob/master/docs/SettingUpRoutes.md)
+- [Adding Port Modules](https://github.com/paulstatezny/elm-router/blob/master/docs/AddingPortModules.md)
+- [Installation Notes for Build Tools](https://github.com/paulstatezny/elm-router/blob/master/docs/BuildTools.md)
+- [API Reference](https://github.com/paulstatezny/elm-router/blob/master/docs/API.md)
 
 ## Installation
 
@@ -83,7 +83,7 @@ $ cd /path/to/elm/project    <-- This directory must be in `source-directories` 
 $ elm-router init
 ```
 
-(Or just copy-and-paste [from here](https://github.com/knledg/elm-router/blob/master/lib/elm-templates/Routes.elm).)
+(Or just copy-and-paste [from here](https://github.com/paulstatezny/elm-router/blob/master/lib/elm-templates/Routes.elm).)
 
 ## What do Elm Routes look like?
 
@@ -116,4 +116,4 @@ For more information about building out your routes, [see this guide](/docs/Sett
 
 ## Questions or Problems?
 
-Feel free to create an issue in the [GitHub issue tracker](https://github.com/knledg/elm-router/issues).
+Feel free to create an issue in the [GitHub issue tracker](https://github.com/paulstatezny/elm-router/issues).
